@@ -19,11 +19,11 @@ async function bootstrap() {
   app.use(bodyParser.urlencoded({ limit: '50mb', extended: true }));
 
   const config = new DocumentBuilder()
-      .addBearerAuth()
-      .setTitle('Blog')
-      .setDescription('The API')
-      .setVersion('1.0')
-      .build();
+    .addBearerAuth()
+    .setTitle('Blog')
+    .setDescription('The API')
+    .setVersion('1.0')
+    .build();
 
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('openapi', app, document);

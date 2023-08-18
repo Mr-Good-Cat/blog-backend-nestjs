@@ -1,5 +1,6 @@
 export enum PageStatus {
-    PENDING = 'PENDING',
-    PUBLISHED = 'PUBLISHED',
-    DELETED = 'DELETED',
+  PENDING = 'PENDING',
+
+  PUBLISHED = 'PUBLISHED',
+  DELETED = 'DELETED',
 }
