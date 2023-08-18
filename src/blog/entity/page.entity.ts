@@ -15,10 +15,10 @@ export class Page {
   @Column()
   title: string;
 
-  @Column({ type: 'text' })
+  @Column({ type: 'text', nullable: true })
   description: string;
 
-  @Column()
+  @Column({ nullable: true })
   order: number;
 
   @Column({ type: 'enum', enum: PageType })
