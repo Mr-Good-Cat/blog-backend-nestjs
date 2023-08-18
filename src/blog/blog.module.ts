@@ -6,6 +6,7 @@ import { PageRepository } from './repository/page.repository';
 import { PageService } from './service/page.service';
 import { CanPageHasNestedPageConstraint } from './validation-rule/can-page-has-nested-page.rule';
 import { CanPageBeNestedPageConstraint } from './validation-rule/can-page-be-nested-page.rule';
+import { CanBeRootPageConstraint } from './validation-rule/can-be-root-page.rule';
 
 @Module({
   imports: [TypeOrmModule.forFeature([Page])],
@@ -15,6 +16,7 @@ import { CanPageBeNestedPageConstraint } from './validation-rule/can-page-be-nes
     PageService,
     CanPageHasNestedPageConstraint,
     CanPageBeNestedPageConstraint,
+    CanBeRootPageConstraint,
   ],
 })
 export class BlogModule {}

@@ -4,6 +4,7 @@ import { PageType } from '../../enum/page-type.enum';
 import { CanPageHasNestedPage } from '../../validation-rule/can-page-has-nested-page.rule';
 import { Transform } from 'class-transformer';
 import { CanPageBeNestedPageRule } from '../../validation-rule/can-page-be-nested-page.rule';
+import { CanBeRootPage } from '../../validation-rule/can-be-root-page.rule';
 
 export class PageCreateDto {
   @ApiProperty()
@@ -24,6 +25,7 @@ export class PageCreateDto {
 
   @ApiProperty({ enum: PageType })
   @IsEnum(PageType)
+  @CanBeRootPage()
   @CanPageBeNestedPageRule()
   type: PageType;
 
