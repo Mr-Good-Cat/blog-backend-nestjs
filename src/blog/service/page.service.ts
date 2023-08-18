@@ -33,13 +33,16 @@ export class PageService {
   private async transformToPageDto(entity: Page): Promise<PageDto> {
     return {
       id: entity.id,
+      title: entity.title,
+      description: entity.description,
+      order: entity.order,
       type: entity.type,
-      path: entity.path,
-      status: entity.status,
       seoTitle: entity.seoTitle,
       seoDescription: entity.seoDescription,
       slug: entity.slug,
-      order: entity.order,
+      path: entity.path,
+      status: entity.status,
+      createAt: entity.createdAt,
     };
   }
 }
