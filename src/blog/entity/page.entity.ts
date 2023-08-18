@@ -1,4 +1,9 @@
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  Column,
+  CreateDateColumn,
+  Entity,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
 import { PageType } from '../enum/page-type.enum';
 import { PageStatus } from '../enum/page-status.enum';
 
@@ -33,4 +38,7 @@ export class Page {
 
   @Column({ type: 'enum', enum: PageStatus, default: PageStatus.PENDING })
   status: PageStatus;
+
+  @CreateDateColumn({ name: 'created_at' })
+  createdAt: Date;
 }
