@@ -3,6 +3,7 @@ import { IsEnum, IsInt, IsOptional, IsString, Matches } from 'class-validator';
 import { PageType } from '../../enum/page-type.enum';
 import { CanPageHasNestedPage } from '../../validation-rule/can-page-has-nested-page.rule';
 import { Transform } from 'class-transformer';
+import { CanPageBeNestedPage } from '../../validation-rule/can-page-be-nested-page';
 
 export class PageCreateDto {
   @ApiProperty()
@@ -23,6 +24,7 @@ export class PageCreateDto {
 
   @ApiProperty({ enum: PageType })
   @IsEnum(PageType)
+  @CanPageBeNestedPage()
   type: PageType;
 
   @ApiProperty()
