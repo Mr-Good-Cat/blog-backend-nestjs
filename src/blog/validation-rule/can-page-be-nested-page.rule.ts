@@ -17,7 +17,7 @@ export class CanPageBeNestedPageConstraint
   constructor(private readonly pageRepository: PageRepository) {}
 
   defaultMessage(validationArguments?: ValidationArguments): string {
-    return `Page with type '${validationArguments.value}' can not be nested page`;
+    return `Page with type '${validationArguments.value}' can not be nested page.`;
   }
 
   validate(
