@@ -11,6 +11,7 @@ import { ApiQuery, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { PageService } from '../service/page.service';
 import { PageDto } from '../dto/response/page.dto';
 import { PageCreateDto } from '../dto/request/page-create.dto';
+import { PageUpdateDto } from '../dto/request/page-update.dto';
 
 @Controller('page')
 @ApiTags('Page')
@@ -63,5 +64,24 @@ export class PageController {
     }
 
     return response;
+  }
+
+  @Post('/update')
+  @ApiResponse({
+    status: 200,
+    description: 'Update page',
+    type: PageDto,
+  })
+  @ApiResponse({
+    status: 400,
+    description: 'If page does not exist',
+  })
+  update(@Body() updateDto: PageUpdateDto) {
+    const response = this.pageService.getById(updateDto.id);
+    if (!response) {
+      throw new BadRequestException(`Not found page by id = ${updateDto.id}`);
+    }
+
+    return this.pageService.update(updateDto);
   }
 }

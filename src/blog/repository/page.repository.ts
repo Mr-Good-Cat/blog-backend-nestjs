@@ -71,6 +71,19 @@ export class PageRepository {
     });
   }
 
+  save(entity: Page): Promise<Page> {
+    return this.repository.save(entity);
+  }
+
+  updateChildrenStatus(path: Page['path'], status: Page['status']) {
+    return this.repository
+      .createQueryBuilder()
+      .update(Page)
+      .set({ status: status })
+      .where('path <@ :path', { path })
+      .execute();
+  }
+
   private async setPath(parentPath: Page['path'], page: Page): Promise<Page> {
     const parentIds = parentPath.split('.').filter((el) => !!el);
 

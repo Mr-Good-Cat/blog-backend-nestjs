@@ -3,6 +3,9 @@ import { PageRepository } from '../repository/page.repository';
 import { PageDto } from '../dto/response/page.dto';
 import { Page } from '../entity/page.entity';
 import { PageCreateDto } from '../dto/request/page-create.dto';
+import { PageUpdateDto } from '../dto/request/page-update.dto';
+import { PageStatus } from '../enum/page-status.enum';
+import { PageType } from '../enum/page-type.enum';
 
 @Injectable()
 export class PageService {
@@ -43,6 +46,36 @@ export class PageService {
 
     if (!entity) {
       return null;
+    }
+
+    return this.transformToPageDto(entity);
+  }
+
+  async update(updateDto: PageUpdateDto): Promise<PageDto> {
+    const entity = await this.pageRepository.findById(updateDto.id);
+
+    entity.title = updateDto.title;
+    entity.description = updateDto.description;
+    entity.order = updateDto.order;
+    entity.seoTitle = updateDto.seoTitle;
+    entity.seoDescription = updateDto.seoDescription;
+    entity.slug = updateDto.slug;
+    entity.status = updateDto.status;
+
+    await this.pageRepository.save(entity);
+
+    const isNotActiveStatus = [PageStatus.PENDING, PageStatus.DELETED].includes(
+      entity.status,
+    );
+    const isCategory = [PageType.CATEGORY, PageType.MAIN_CATEGORY].includes(
+      entity.type,
+    );
+
+    if (isNotActiveStatus && isCategory) {
+      await this.pageRepository.updateChildrenStatus(
+        entity.path,
+        entity.status,
+      );
     }
 
     return this.transformToPageDto(entity);

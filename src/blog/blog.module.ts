@@ -9,6 +9,7 @@ import { CanPageBeNestedPageConstraint } from './validation-rule/can-page-be-nes
 import { CanBeRootPageConstraint } from './validation-rule/can-be-root-page.rule';
 import { UrlService } from './service/url.service';
 import { IsUniqueUrlConstraint } from './validation-rule/is-unique-url.rule';
+import { IsExistPageConstraint } from './validation-rule/is-exist-page.rule';
 
 @Module({
   imports: [TypeOrmModule.forFeature([Page])],
@@ -21,6 +22,7 @@ import { IsUniqueUrlConstraint } from './validation-rule/is-unique-url.rule';
     CanPageBeNestedPageConstraint,
     CanBeRootPageConstraint,
     IsUniqueUrlConstraint,
+    IsExistPageConstraint,
   ],
 })
 export class BlogModule {}
