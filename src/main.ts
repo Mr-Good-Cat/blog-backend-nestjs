@@ -21,7 +21,7 @@ async function bootstrap() {
         return new BadRequestException(
           validationErrors.map((error) => ({
             field: error.property,
-            error: Object.values(error.constraints),
+            errors: Object.values(error.constraints),
           })),
         );
       },
