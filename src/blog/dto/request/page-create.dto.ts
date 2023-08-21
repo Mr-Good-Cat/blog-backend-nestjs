@@ -22,7 +22,7 @@ export class PageCreateDto {
   @ApiPropertyOptional()
   @IsOptional()
   @Transform(({ value }) => parseInt(value, 10))
-  @IsInt()
+  @IsInt({ message: 'Order must be an integer number' })
   order: number;
 
   @ApiProperty({ enum: PageType })
