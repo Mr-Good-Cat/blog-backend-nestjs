@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { Page } from '../entity/page.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
+import { PageType } from '../enum/page-type.enum';
 
 @Injectable()
 export class PageRepository {
@@ -43,6 +44,31 @@ export class PageRepository {
       .createQueryBuilder()
       .where('path @> :path and path != :path', { path })
       .getMany();
+  }
+
+  findChildren(parentId: number, level: number): Promise<Page[]> {
+    if (!Number.isInteger(parentId) || !Number.isInteger(level)) {
+      return Promise.resolve([]);
+    }
+
+    return this.repository
+      .createQueryBuilder('page')
+      .where('path ~ :lquery', { lquery: `*.${parentId}.*{${level}}` })
+      .orderBy({
+        'page.order': 'ASC',
+      })
+      .getMany();
+  }
+
+  findMainCategoryList(): Promise<Page[]> {
+    return this.repository.find({
+      where: {
+        type: PageType.MAIN_CATEGORY,
+      },
+      order: {
+        order: 'ASC',
+      },
+    });
   }
 
   private async setPath(parentPath: Page['path'], page: Page): Promise<Page> {

@@ -30,6 +30,32 @@ export class PageService {
     return this.transformToPageDto(page);
   }
 
+  async list(parentId?: number): Promise<PageDto[]> {
+    if (parentId) {
+      return this.getNextChildren(parentId);
+    }
+
+    return this.getMainCategoryList();
+  }
+
+  private async getMainCategoryList(): Promise<PageDto[]> {
+    const mainCategoryList = await this.pageRepository.findMainCategoryList();
+
+    return this.transformListToPageDto(mainCategoryList);
+  }
+
+  private async getNextChildren(parentId: number): Promise<PageDto[]> {
+    const children = await this.pageRepository.findChildren(parentId, 1);
+
+    return this.transformListToPageDto(children);
+  }
+
+  private async transformListToPageDto(entityList: Page[]): Promise<PageDto[]> {
+    const request = entityList.map((e) => this.transformToPageDto(e));
+
+    return Promise.all(request);
+  }
+
   private async transformToPageDto(entity: Page): Promise<PageDto> {
     return {
       id: entity.id,
