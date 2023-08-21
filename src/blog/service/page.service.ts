@@ -41,6 +41,18 @@ export class PageService {
     return this.getMainCategoryList();
   }
 
+  async ancestors(id: Page['id']): Promise<PageDto[]> {
+    const page = await this.pageRepository.findById(id);
+
+    if (!page) {
+      return [];
+    }
+
+    const ancestors = await this.pageRepository.findAllAncestors(page.path);
+
+    return this.transformListToPageDto([...ancestors, page]);
+  }
+
   async getById(id: Page['id']): Promise<PageDto | null> {
     const entity = await this.pageRepository.findById(id);
 

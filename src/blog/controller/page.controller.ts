@@ -47,6 +47,17 @@ export class PageController {
     return this.pageService.list(parentPageId);
   }
 
+  @Get('/:id/ancestors')
+  @ApiResponse({
+    status: 200,
+    description: 'Get list of ancestors of page with id and the page itself',
+    type: PageDto,
+    isArray: true,
+  })
+  ancestors(@Param('id') id: number) {
+    return this.pageService.ancestors(id);
+  }
+
   @Get('/:id')
   @ApiResponse({
     status: 200,
