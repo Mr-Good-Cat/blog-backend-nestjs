@@ -7,16 +7,20 @@ import { PageService } from './service/page.service';
 import { CanPageHasNestedPageConstraint } from './validation-rule/can-page-has-nested-page.rule';
 import { CanPageBeNestedPageConstraint } from './validation-rule/can-page-be-nested-page.rule';
 import { CanBeRootPageConstraint } from './validation-rule/can-be-root-page.rule';
+import { UrlService } from './service/url.service';
+import { IsUniqueUrlConstraint } from './validation-rule/is-unique-url.rule';
 
 @Module({
   imports: [TypeOrmModule.forFeature([Page])],
   controllers: [PageController],
   providers: [
+    UrlService,
     PageRepository,
     PageService,
     CanPageHasNestedPageConstraint,
     CanPageBeNestedPageConstraint,
     CanBeRootPageConstraint,
+    IsUniqueUrlConstraint,
   ],
 })
 export class BlogModule {}

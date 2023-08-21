@@ -30,6 +30,21 @@ export class PageRepository {
     });
   }
 
+  findBySlug(slug: Page['slug']): Promise<Page[]> {
+    return this.repository.find({
+      where: {
+        slug,
+      },
+    });
+  }
+
+  findAllAncestors(path: Page['path']): Promise<Page[]> {
+    return this.repository
+      .createQueryBuilder()
+      .where('path @> :path and path != :path', { path })
+      .getMany();
+  }
+
   private async setPath(parentPath: Page['path'], page: Page): Promise<Page> {
     const parentIds = parentPath.split('.').filter((el) => !!el);
 

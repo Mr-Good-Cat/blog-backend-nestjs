@@ -5,6 +5,7 @@ import { CanPageHasNestedPage } from '../../validation-rule/can-page-has-nested-
 import { Transform } from 'class-transformer';
 import { CanPageBeNestedPageRule } from '../../validation-rule/can-page-be-nested-page.rule';
 import { CanBeRootPage } from '../../validation-rule/can-be-root-page.rule';
+import { IsUniqueUrl } from '../../validation-rule/is-unique-url.rule';
 
 export class PageCreateDto {
   @ApiProperty()
@@ -45,6 +46,7 @@ export class PageCreateDto {
   @Matches(/^[a-z0-9-]+$/, {
     message: 'Slug should only contain letters, nubers and symbol "-"',
   })
+  @IsUniqueUrl()
   slug: string;
 
   @ApiPropertyOptional()
