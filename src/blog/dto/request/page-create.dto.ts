@@ -1,5 +1,12 @@
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
-import { IsEnum, IsInt, IsOptional, IsString, Matches } from 'class-validator';
+import {
+  IsEnum,
+  IsInt,
+  IsNotEmpty,
+  IsOptional,
+  IsString,
+  Matches,
+} from 'class-validator';
 import { PageType } from '../../enum/page-type.enum';
 import { CanPageHasNestedPage } from '../../validation-rule/can-page-has-nested-page.rule';
 import { Transform } from 'class-transformer';
@@ -11,6 +18,7 @@ export class PageCreateDto {
   @ApiProperty()
   @IsString()
   @Transform(({ value }) => value.trim())
+  @IsNotEmpty()
   title: string;
 
   @ApiPropertyOptional()
@@ -34,16 +42,19 @@ export class PageCreateDto {
   @ApiProperty()
   @IsString()
   @Transform(({ value }) => value.trim())
+  @IsNotEmpty()
   seoTitle: string;
 
   @ApiProperty()
   @IsString()
   @Transform(({ value }) => value.trim())
+  @IsNotEmpty()
   seoDescription: string;
 
   @ApiProperty()
   @IsString()
   @Transform(({ value }) => value.trim())
+  @IsNotEmpty()
   @Matches(/^[a-z0-9-]+$/, {
     message: 'Slug should only contain letters, nubers and symbol "-"',
   })
