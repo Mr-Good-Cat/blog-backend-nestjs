@@ -38,6 +38,16 @@ export class PageService {
     return this.getMainCategoryList();
   }
 
+  async getById(id: Page['id']): Promise<PageDto | null> {
+    const entity = await this.pageRepository.findById(id);
+
+    if (!entity) {
+      return null;
+    }
+
+    return this.transformToPageDto(entity);
+  }
+
   private async getMainCategoryList(): Promise<PageDto[]> {
     const mainCategoryList = await this.pageRepository.findMainCategoryList();
 

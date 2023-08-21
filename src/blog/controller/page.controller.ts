@@ -1,4 +1,12 @@
-import { Body, Controller, Get, Post, Query } from '@nestjs/common';
+import {
+  BadRequestException,
+  Body,
+  Controller,
+  Get,
+  Param,
+  Post,
+  Query,
+} from '@nestjs/common';
 import { ApiQuery, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { PageService } from '../service/page.service';
 import { PageDto } from '../dto/response/page.dto';
@@ -36,5 +44,24 @@ export class PageController {
   })
   list(@Query('parentPageId') parentPageId?: number) {
     return this.pageService.list(parentPageId);
+  }
+
+  @Get('/:id')
+  @ApiResponse({
+    status: 200,
+    description: 'Get page by id',
+    type: PageDto,
+  })
+  @ApiResponse({
+    status: 400,
+    description: 'If page does not exist',
+  })
+  getById(@Param('id') id: number) {
+    const response = this.pageService.getById(id);
+    if (!response) {
+      throw new BadRequestException(`Not found page by id = ${id}`);
+    }
+
+    return response;
   }
 }
