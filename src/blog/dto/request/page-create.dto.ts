@@ -21,6 +21,7 @@ export class PageCreateDto {
 
   @ApiPropertyOptional()
   @IsOptional()
+  @Transform(({ value }) => parseInt(value, 10))
   @IsInt()
   order: number;
 
