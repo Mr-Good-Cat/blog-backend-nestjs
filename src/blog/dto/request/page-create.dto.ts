@@ -56,7 +56,8 @@ export class PageCreateDto {
   @Transform(({ value }) => value.trim())
   @IsNotEmpty()
   @Matches(/^[a-z0-9-]+$/, {
-    message: 'Slug should only contain letters, nubers and symbol "-"',
+    message:
+      'Slug should only contain letters in lower case, numbers and symbol "-"',
   })
   @IsUniqueUrl()
   slug: string;
