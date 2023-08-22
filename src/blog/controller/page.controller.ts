@@ -6,12 +6,14 @@ import {
   Param,
   Post,
   Query,
+  UseGuards,
 } from '@nestjs/common';
-import { ApiQuery, ApiResponse, ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiQuery, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { PageService } from '../service/page.service';
 import { PageDto } from '../dto/response/page.dto';
 import { PageCreateDto } from '../dto/request/page-create.dto';
 import { PageUpdateDto } from '../dto/request/page-update.dto';
+import { AccessTokenGuard } from '../../auth/guard/access-token.guard';
 
 @Controller('page')
 @ApiTags('Page')
@@ -19,6 +21,8 @@ export class PageController {
   constructor(private readonly pageService: PageService) {}
 
   @Post('create')
+  @ApiBearerAuth()
+  @UseGuards(AccessTokenGuard)
   @ApiResponse({
     status: 200,
     description: 'Create page',
@@ -29,6 +33,8 @@ export class PageController {
   }
 
   @Get('list')
+  @ApiBearerAuth()
+  @UseGuards(AccessTokenGuard)
   @ApiQuery({
     name: 'parentPageId',
     type: Number,
@@ -48,6 +54,8 @@ export class PageController {
   }
 
   @Get('/:id/ancestors')
+  @ApiBearerAuth()
+  @UseGuards(AccessTokenGuard)
   @ApiResponse({
     status: 200,
     description: 'Get list of ancestors of page with id and the page itself',
@@ -59,6 +67,8 @@ export class PageController {
   }
 
   @Get('/:id')
+  @ApiBearerAuth()
+  @UseGuards(AccessTokenGuard)
   @ApiResponse({
     status: 200,
     description: 'Get page by id',
@@ -78,6 +88,8 @@ export class PageController {
   }
 
   @Post('/update')
+  @ApiBearerAuth()
+  @UseGuards(AccessTokenGuard)
   @ApiResponse({
     status: 200,
     description: 'Update page',
