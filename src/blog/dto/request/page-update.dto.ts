@@ -31,7 +31,8 @@ export class PageUpdateDto {
 
   @ApiPropertyOptional()
   @IsOptional()
-  @IsInt()
+  @Transform(({ value }) => parseInt(value, 10))
+  @IsInt({ message: 'Order must be an integer number' })
   order: number;
 
   @ApiProperty()
