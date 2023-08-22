@@ -9,8 +9,6 @@ import { ethers } from 'ethers';
 
 @Injectable()
 export class AuthService {
-  private logger = new Logger(AuthService.name);
-
   constructor(
     private readonly userService: UserService,
     private readonly jwtService: JwtService,
