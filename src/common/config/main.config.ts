@@ -6,5 +6,8 @@ export default () => {
     mode: process.env.MODE || 'PROD',
 
     database: dbConfig(),
+
+    jwtSecret: process.env.JWT_SECRET_KEY || 'secretKey',
+    expiresIn: process.env.JWT_EXPIRES_IN || '1d',
   };
 };
