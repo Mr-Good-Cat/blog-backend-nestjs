@@ -1,4 +1,4 @@
-import { ForbiddenException, Injectable, Logger } from '@nestjs/common';
+import { ForbiddenException, Injectable } from '@nestjs/common';
 import { SignTokenRequestDto } from './dto/request/sign-token-request.dto';
 import { v4 as uuidv4 } from 'uuid';
 import { UserService } from '../user/user.service';
