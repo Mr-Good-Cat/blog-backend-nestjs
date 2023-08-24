@@ -10,10 +10,12 @@ import { CanBeRootPageConstraint } from './validation-rule/can-be-root-page.rule
 import { UrlService } from './service/url.service';
 import { IsUniqueUrlConstraint } from './validation-rule/is-unique-url.rule';
 import { IsExistPageConstraint } from './validation-rule/is-exist-page.rule';
+import { BlogService } from './service/blog.service';
+import { BlogController } from './controller/blog.controller';
 
 @Module({
   imports: [TypeOrmModule.forFeature([Page])],
-  controllers: [PageController],
+  controllers: [PageController, BlogController],
   providers: [
     UrlService,
     PageRepository,
@@ -23,6 +25,7 @@ import { IsExistPageConstraint } from './validation-rule/is-exist-page.rule';
     CanBeRootPageConstraint,
     IsUniqueUrlConstraint,
     IsExistPageConstraint,
+    BlogService,
   ],
 })
 export class BlogModule {}
