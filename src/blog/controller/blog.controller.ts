@@ -3,6 +3,7 @@ import { ApiResponse, ApiTags } from '@nestjs/swagger';
 import { BlogService } from '../service/blog.service';
 import { BlogMainCategoryDto } from '../dto/response/blog-main-category.dto';
 import { BlogArticleDto } from '../dto/response/blog-article.dto';
+import { BlogAllCategoriesByMainCategoriesDto } from '../dto/response/blog-all-categories-by-main-categories.dto';
 
 @Controller('blog')
 @ApiTags('blog')
@@ -29,5 +30,15 @@ export class BlogController {
   })
   newArticle(@Param('mainCategorySlug') mainCategorySlug: string) {
     return this.blogService.getNewArticle(mainCategorySlug);
+  }
+
+  @Get('all-categories')
+  @ApiResponse({
+    status: 200,
+    description: 'Get list of all categoriest for all main categories',
+    type: BlogAllCategoriesByMainCategoriesDto,
+  })
+  allCategories() {
+    return this.blogService.getAllCategoriesByMainCategories();
   }
 }

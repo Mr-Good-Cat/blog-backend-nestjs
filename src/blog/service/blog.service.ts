@@ -4,6 +4,8 @@ import { UrlService } from './url.service';
 import { Page } from '../entity/page.entity';
 import { BlogMainCategoryDto } from '../dto/response/blog-main-category.dto';
 import { BlogArticleDto } from '../dto/response/blog-article.dto';
+import { BlogCategoryDto } from '../dto/response/blog-category.dto';
+import { BlogAllCategoriesByMainCategoriesDto } from '../dto/response/blog-all-categories-by-main-categories.dto';
 
 @Injectable()
 export class BlogService {
@@ -42,6 +44,42 @@ export class BlogService {
     const request = entityList.map((e) => this.transformToBlogArticleDto(e));
 
     return Promise.all(request);
+  }
+
+  async getAllCategoriesByMainCategories(): Promise<BlogAllCategoriesByMainCategoriesDto> {
+    const mainCategoryList = await this.pageRepository.findMainCategoryList();
+
+    const result = {};
+    for (const mainCategory of mainCategoryList) {
+      const allCategories = await this.pageRepository.findAllCategories(
+        mainCategory.path,
+      );
+
+      console.log(allCategories);
+
+      const request = allCategories.map((e) =>
+        this.transformToBlogCategoryDto(e),
+      );
+
+      result[mainCategory.slug] = await Promise.all(request);
+    }
+
+    return { result };
+  }
+
+  private async transformToBlogCategoryDto(
+    entity: Page,
+  ): Promise<BlogCategoryDto> {
+    const url = await this.urlService.to(entity);
+
+    return {
+      id: entity.id,
+      title: entity.title,
+      seoTitle: entity.seoTitle,
+      seoDescription: entity.seoDescription,
+      slug: entity.slug,
+      url,
+    };
   }
 
   private async transformToBlogArticleDto(

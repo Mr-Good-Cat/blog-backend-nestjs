@@ -107,6 +107,19 @@ export class PageRepository {
       .getMany();
   }
 
+  findAllCategories(mainCategoryPath: Page['path']): Promise<Page[]> {
+    return this.repository
+      .createQueryBuilder('page')
+      .where('path <@ :path and path != :path and type = :type', {
+        path: mainCategoryPath,
+        type: PageType.CATEGORY,
+      })
+      .orderBy({
+        'page.order': 'ASC',
+      })
+      .getMany();
+  }
+
   private async setPath(parentPath: Page['path'], page: Page): Promise<Page> {
     const parentIds = parentPath.split('.').filter((el) => !!el);
 
