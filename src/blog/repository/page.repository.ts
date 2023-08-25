@@ -84,6 +84,29 @@ export class PageRepository {
       .execute();
   }
 
+  getMainCategoryBySlug(slug: Page['path']): Promise<Page | null> {
+    return this.repository.findOne({
+      where: {
+        slug,
+        type: PageType.MAIN_CATEGORY,
+      },
+    });
+  }
+
+  findNewArticles(path: Page['path']): Promise<Page[]> {
+    return this.repository
+      .createQueryBuilder('page')
+      .where('path <@ :path and path != :path and type = :type', {
+        path,
+        type: PageType.ARTICLE,
+      })
+      .orderBy({
+        'page.created_at': 'DESC',
+      })
+      .limit(2)
+      .getMany();
+  }
+
   private async setPath(parentPath: Page['path'], page: Page): Promise<Page> {
     const parentIds = parentPath.split('.').filter((el) => !!el);
 
