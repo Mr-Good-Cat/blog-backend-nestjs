@@ -6,6 +6,8 @@ import { BlogMainCategoryDto } from '../dto/response/blog-main-category.dto';
 import { BlogArticleDto } from '../dto/response/blog-article.dto';
 import { BlogCategoryDto } from '../dto/response/blog-category.dto';
 import { BlogAllCategoriesByMainCategoriesDto } from '../dto/response/blog-all-categories-by-main-categories.dto';
+import { BlogBreadcrumbsDto } from '../dto/response/blog-breadcrumbs.dto';
+import { BlogArticlePageDto } from '../dto/response/blog-article-page.dto';
 
 const SPECIAL_CATEGORY_ALL = 'all';
 
@@ -98,6 +100,25 @@ export class BlogService {
     return Promise.all(request);
   }
 
+  async getArticle(
+    mainCategorySlug: Page['slug'],
+    categorySlug: Page['slug'],
+    articleSlug: Page['slug'],
+  ): Promise<BlogArticlePageDto> {
+    const articleList = await this.pageRepository.findBySlug(articleSlug);
+    const urlList = await Promise.all(
+      articleList.map((c) => this.urlService.to(c)),
+    );
+    const indexOfArticle = urlList.indexOf(
+      this.urlService.toArticle(mainCategorySlug, categorySlug, articleSlug),
+    );
+
+    const article = articleList[indexOfArticle];
+    const ancestors = await this.pageRepository.findAllAncestors(article.path);
+
+    return this.transformToBlogArticlePageDto(article, ancestors);
+  }
+
   private async transformToBlogCategoryDto(
     entity: Page,
   ): Promise<BlogCategoryDto> {
@@ -141,6 +162,39 @@ export class BlogService {
       seoTitle: entity.seoTitle,
       seoDescription: entity.seoDescription,
       slug: entity.slug,
+      url,
+    };
+  }
+
+  private async transformToBlogArticlePageDto(
+    entity: Page,
+    ancestors: Page[],
+  ): Promise<BlogArticlePageDto> {
+    const breadcrumbs = await Promise.all(
+      ancestors.map((a) => this.transformToBlogBreadcrumbsDto(a)),
+    );
+    const url = await this.urlService.to(entity);
+
+    return {
+      id: entity.id,
+      title: entity.title,
+      description: entity.description,
+      seoTitle: entity.seoTitle,
+      seoDescription: entity.seoDescription,
+      slug: entity.slug,
+      createdAt: entity.createdAt,
+      url,
+      breadcrumbs,
+    };
+  }
+
+  private async transformToBlogBreadcrumbsDto(
+    entity: Page,
+  ): Promise<BlogBreadcrumbsDto> {
+    const url = await this.urlService.to(entity);
+
+    return {
+      title: entity.title,
       url,
     };
   }

@@ -21,7 +21,7 @@ export class UrlService {
 
     const prevCategory = ancestors[ancestors.length - 1];
 
-    return `/${mainCategory.slug}/${prevCategory.slug}/${page.slug}`;
+    return this.toArticle(mainCategory.slug, prevCategory.slug, page.slug);
   }
 
   toCategory(
@@ -29,5 +29,13 @@ export class UrlService {
     categorySlug: Page['slug'],
   ): string {
     return `/${mainCategorySlug}/${categorySlug}`;
+  }
+
+  toArticle(
+    mainCategorySlug: Page['slug'],
+    categorySlug: Page['slug'],
+    articleSlug: Page['slug'],
+  ): string {
+    return `/${mainCategorySlug}/${categorySlug}/${articleSlug}`;
   }
 }

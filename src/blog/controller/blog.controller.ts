@@ -55,4 +55,23 @@ export class BlogController {
   ) {
     return this.blogService.getNestedArticles(mainCategorySlug, categorySlug);
   }
+
+  @Get('/:mainCategorySlug/:categorySlug/:articleSlug')
+  @ApiResponse({
+    status: 200,
+    description: 'Get article info',
+    type: BlogArticleDto,
+    isArray: true,
+  })
+  article(
+    @Param('mainCategorySlug') mainCategorySlug: string,
+    @Param('categorySlug') categorySlug: string,
+    @Param('articleSlug') articleSlug: string,
+  ) {
+    return this.blogService.getArticle(
+      mainCategorySlug,
+      categorySlug,
+      articleSlug,
+    );
+  }
 }
