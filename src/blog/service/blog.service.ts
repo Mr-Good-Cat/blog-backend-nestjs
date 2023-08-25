@@ -7,6 +7,8 @@ import { BlogArticleDto } from '../dto/response/blog-article.dto';
 import { BlogCategoryDto } from '../dto/response/blog-category.dto';
 import { BlogAllCategoriesByMainCategoriesDto } from '../dto/response/blog-all-categories-by-main-categories.dto';
 
+const SPECIAL_CATEGORY_ALL = 'all';
+
 @Injectable()
 export class BlogService {
   constructor(
@@ -55,8 +57,6 @@ export class BlogService {
         mainCategory.path,
       );
 
-      console.log(allCategories);
-
       const request = allCategories.map((e) =>
         this.transformToBlogCategoryDto(e),
       );
@@ -65,6 +65,37 @@ export class BlogService {
     }
 
     return { result };
+  }
+
+  async getNestedArticles(
+    mainCategorySlug: Page['slug'],
+    categorySlug: Page['slug'],
+  ): Promise<BlogArticleDto[]> {
+    let path: Page['path'];
+
+    if (categorySlug === SPECIAL_CATEGORY_ALL) {
+      const mainCategory = await this.pageRepository.getMainCategoryBySlug(
+        mainCategorySlug,
+      );
+
+      path = mainCategory.path;
+    } else {
+      const categoryList = await this.pageRepository.findBySlug(categorySlug);
+      const urlList = await Promise.all(
+        categoryList.map((c) => this.urlService.to(c)),
+      );
+      const indexOfCategory = urlList.indexOf(
+        this.urlService.toCategory(mainCategorySlug, categorySlug),
+      );
+
+      path = categoryList[indexOfCategory].path;
+    }
+
+    const entityList = await this.pageRepository.findAllArticles(path);
+
+    const request = entityList.map((e) => this.transformToBlogArticleDto(e));
+
+    return Promise.all(request);
   }
 
   private async transformToBlogCategoryDto(

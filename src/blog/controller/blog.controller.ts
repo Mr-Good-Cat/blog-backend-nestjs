@@ -41,4 +41,18 @@ export class BlogController {
   allCategories() {
     return this.blogService.getAllCategoriesByMainCategories();
   }
+
+  @Get('/:mainCategorySlug/:categorySlug/articles')
+  @ApiResponse({
+    status: 200,
+    description: 'Get all articles in main category > category',
+    type: BlogArticleDto,
+    isArray: true,
+  })
+  nestedArticles(
+    @Param('mainCategorySlug') mainCategorySlug: string,
+    @Param('categorySlug') categorySlug: string,
+  ) {
+    return this.blogService.getNestedArticles(mainCategorySlug, categorySlug);
+  }
 }

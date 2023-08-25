@@ -16,11 +16,18 @@ export class UrlService {
     const mainCategory = ancestors[0];
 
     if (page.type === PageType.CATEGORY) {
-      return `/${mainCategory.slug}/${page.slug}`;
+      return this.toCategory(mainCategory.slug, page.slug);
     }
 
     const prevCategory = ancestors[ancestors.length - 1];
 
     return `/${mainCategory.slug}/${prevCategory.slug}/${page.slug}`;
+  }
+
+  toCategory(
+    mainCategorySlug: Page['slug'],
+    categorySlug: Page['slug'],
+  ): string {
+    return `/${mainCategorySlug}/${categorySlug}`;
   }
 }
