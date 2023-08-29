@@ -1,16 +1,6 @@
 version: "3"
 
 services:
-  blog-backend-nestjs-api:
-    build:
-      context: .
-      dockerfile: Dockerfile
-    command: yarn start:dev
-    volumes:
-      - .:/home/node/app
-    ports:
-      - "3000:3000"
-
   blog-backend-nestjs-db:
     image: postgres:14-alpine
     volumes:
@@ -25,6 +15,5 @@ services:
       - "5432:5432"
 
 volumes:
-  node_modules:
   cache:
     driver: local

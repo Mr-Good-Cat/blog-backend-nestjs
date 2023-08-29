@@ -15,7 +15,15 @@ The page structure is stored in the `page` table as a tree (template
 - Ethers.js
 - Swagger
 
-## Instructions to run the project with Docker
+## Instructions to run the project
 
-Command: `docker-compose up` and then visit [localhost:3000/openapi](http://localhost:3000/openapi)
+1. Сreate a database image. To do this, run the command `docker-compose up -d`
+2. Add host to `/etc/hosts`:
+```
+127.0.0.1       blog-backend-nestjs-db
+```
+3. Install dependencies `yarn install`
+4. Run migrations `yarn run migration:up`. 
+If the command didn't work run `yarn run typeorm` only once and then run `yarn run migration:up`
+5. Visit [localhost:3000/openapi](http://localhost:3000/openapi)
 
