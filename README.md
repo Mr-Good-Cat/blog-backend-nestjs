@@ -13,6 +13,7 @@ The page structure is stored in the `page` table as a tree (template
 - Nest.js
 - PostgreSQL
 - Ethers.js
+- Swagger
 
 ## Instructions to run the project with Docker
 
