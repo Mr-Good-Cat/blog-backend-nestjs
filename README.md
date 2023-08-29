@@ -17,5 +17,5 @@ The page structure is stored in the `page` table as a tree (template
 
 ## Instructions to run the project with Docker
 
-Command: `docker-compose up` and then visit `localhost:3000`
+Command: `docker-compose up` and then visit [localhost:3000/openapi](http://localhost:3000/openapi)
 

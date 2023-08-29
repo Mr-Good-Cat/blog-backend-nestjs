@@ -27,23 +27,6 @@ services:
     ports:
       - "5432:5432"
 
-  blog-backend-nestjs-redis:
-    image: redis:6-alpine
-    user: root
-    command: redis-server --save 20 1 --loglevel warning --replica-read-only no
-    volumes:
-      - cache:/data
-    ports:
-      - "6379:6379"
-
-  redis-commander:
-    image: rediscommander/redis-commander:latest
-    restart: always
-    environment:
-      - REDIS_HOSTS=local:blog-backend-nestjs-redis:6379
-    ports:
-      - "8081:8081"
-
 volumes:
   node_modules:
   cache:
