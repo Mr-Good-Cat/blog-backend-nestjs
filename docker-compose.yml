@@ -9,8 +9,6 @@ services:
     command: yarn start:dev
     volumes:
       - .:/home/node/app
-    dns:
-      - 8.8.8.8
     ports:
       - "3000:3000"
 
